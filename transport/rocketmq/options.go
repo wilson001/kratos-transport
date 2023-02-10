@@ -3,6 +3,7 @@ package rocketmq
 import (
 	"crypto/tls"
 
+	"github.com/go-kratos/kratos/v2/log"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/trace"
 
@@ -111,5 +112,11 @@ func WithTracerProvider(provider trace.TracerProvider, tracerName string) Server
 func WithPropagator(propagators propagation.TextMapPropagator) ServerOption {
 	return func(s *Server) {
 		s.brokerOpts = append(s.brokerOpts, broker.WithPropagator(propagators))
+	}
+}
+
+func WithLogger(logger log.Logger) ServerOption {
+	return func(s *Server) {
+		s.brokerOpts = append(s.brokerOpts, rocketmq.WithLogger(logger))
 	}
 }

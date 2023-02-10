@@ -1,6 +1,7 @@
 package rocketmq
 
 import (
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/tx7do/kratos-transport/broker"
 )
 
@@ -19,6 +20,7 @@ type retryCountKey struct{}
 type namespaceKey struct{}
 type instanceNameKey struct{}
 type groupNameKey struct{}
+type loggerKey struct{}
 
 func WithAliyunHttpSupport() broker.Option {
 	return broker.OptionContextWithValue(enableAliyunHttpKey{}, true)
@@ -59,6 +61,10 @@ func WithInstanceName(name string) broker.Option {
 
 func WithGroupName(name string) broker.Option {
 	return broker.OptionContextWithValue(groupNameKey{}, name)
+}
+
+func WithLogger(logger log.Logger) broker.Option {
+	return broker.OptionContextWithValue(loggerKey{}, logger)
 }
 
 ///
