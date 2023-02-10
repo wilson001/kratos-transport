@@ -3,8 +3,9 @@ package rocketmq
 import (
 	"context"
 	"errors"
-	"github.com/apache/rocketmq-client-go/v2/rlog"
 	"sync"
+
+	"github.com/apache/rocketmq-client-go/v2/rlog"
 
 	"go.opentelemetry.io/otel/attribute"
 	semConv "go.opentelemetry.io/otel/semconv/v1.12.0"
@@ -89,6 +90,9 @@ func (r *rocketmqBroker) Init(opts ...broker.Option) error {
 	r.opts.Apply(opts...)
 
 	rlog.SetLogger(&logger{})
+	if v, ok := r.opts.Context.Value(loggerKey{}).(log.Logger); ok {
+		rlog.SetLogger(&logger{v})
+	}
 
 	if v, ok := r.opts.Context.Value(nameServersKey{}).([]string); ok {
 		r.nameServers = v
